@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Amir Arayeshi</Authors>
+    <Company>InfoTeach Bridge</Company>
+    <RepositoryUrl>https://github.com/InfoTechBridge/AnyCache</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/InfoTechBridge/AnyCache</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/InfoTechBridge/AnyCache/License</PackageLicenseUrl>
+    <PackageTags>Cache, dotnet, dotnetcore, Xamarin, InMemory</PackageTags>
+    <Description>AnyCache .Net and .Net Core InMemmory caching provider.</Description>
+    <Copyright>2018 InfoTechbridge</Copyright>
+  </PropertyGroup>
+
+  <!-- common NuGet package refs that affect all projects -->
+  <ItemGroup>
+    <ProjectReference Include="..\AnyCache.Core\AnyCache.Core.csproj" />
+  </ItemGroup>
+
+
+  <!-- .NET Standard 2.0 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory">
+      <Version>2.1.2</Version>
+    </PackageReference>
+  </ItemGroup>
+
+
+  <!-- .NET 4.5 references, compilation flags and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Caching" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
+    <DefineConstants>NET45;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+</Project>

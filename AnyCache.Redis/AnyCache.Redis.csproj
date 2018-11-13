@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Amir Arayeshi</Authors>
+    <Company>InfoTeach Bridge</Company>
+    <RepositoryUrl>https://github.com/InfoTechBridge/AnyCache</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/InfoTechBridge/AnyCache</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/InfoTechBridge/AnyCache/License</PackageLicenseUrl>
+    <PackageTags>Cache, dotnet, dotnetcore, Xamarin, Redis</PackageTags>
+    <Description>AnyCache .Net and .Net Core Redis caching provider.</Description>
+    <Copyright>2018 InfoTechbridge</Copyright>
+  </PropertyGroup>
+
+  <!-- common NuGet package refs that affect all projects -->
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" Version="2.0.513" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnyCache.Core\AnyCache.Core.csproj" />
+    <ProjectReference Include="..\AnyCache.Serialization\AnyCache.Serialization.csproj" />
+  </ItemGroup>
+
+
+  <!-- .NET Standard 2.0 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+  </ItemGroup>
+
+
+  <!-- .NET 4.5 references, compilation flags and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>NET45;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+</Project>
