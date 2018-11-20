@@ -20,7 +20,10 @@ namespace AnyCache.InMemory
 
         public InMemoryCache(MemoryCache cache)
         {
-            _cache = cache;
+            if (cache == null)
+                _cache = new MemoryCache(new MemoryCacheOptions());
+            else
+                _cache = cache;
         }
 
         //public object this[string key] { get => Get(key); set => Set(key, value); }
@@ -227,7 +230,7 @@ namespace AnyCache.InMemory
         }
 
         public override IEnumerator<KeyValuePair<string, object>> GetEnumerator()
-        {
+        {            
             throw new NotImplementedException();
         }
 

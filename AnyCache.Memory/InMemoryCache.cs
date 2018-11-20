@@ -20,7 +20,10 @@ namespace AnyCache.InMemory
 
         public InMemoryCache(ObjectCache cache)
         {
-            _cache = cache;
+             if (cache == null)
+               _cache = MemoryCache.Default;
+            else
+                _cache = cache;
         }
 
         //public object this[string key] { get => Get(key); set => Set(key, value); }
