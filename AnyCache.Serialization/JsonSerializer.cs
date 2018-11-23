@@ -46,17 +46,31 @@ namespace AnyCache.Serialization
 
         public void Serialize(object value, Stream stream)
         {
+            var settings = new JsonSerializerSettings()
+            {                
+                TypeNameHandling = TypeNameHandling.Auto,
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented,
+            };
+            settings.Converters.Add(new Newtonsoft.Json.Converters.JavaScriptDateTimeConverter());
+
             using (StreamWriter sw = new StreamWriter(stream, encoding))
             {
                 if (SerializeTypeName)
                     sw.WriteLine(value.GetType().AssemblyQualifiedName);
 
-                sw.Write(JsonConvert.SerializeObject(value));
+                sw.Write(JsonConvert.SerializeObject(value, settings));
             }
         }
 
         public object Deserialize(Stream stream)
         {
+            var settings = new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                NullValueHandling = NullValueHandling.Ignore,
+            };
+
             using (StreamReader sr = new StreamReader(stream, encoding))
             {
                 if (SerializeTypeName)
@@ -64,10 +78,10 @@ namespace AnyCache.Serialization
                     string className = sr.ReadLine();
                     Type objectType = Util.GetType(className);
 
-                    return JsonConvert.DeserializeObject(sr.ReadToEnd(), objectType);
+                    return JsonConvert.DeserializeObject(sr.ReadToEnd(), objectType, settings);
                 }
                 else
-                    return JsonConvert.DeserializeObject(sr.ReadToEnd());
+                    return JsonConvert.DeserializeObject(sr.ReadToEnd(), settings);
             }
         }
 
