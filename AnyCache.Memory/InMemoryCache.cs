@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnyCache.InMemory
 {
-    public class InMemoryCache : CacheBase, IDisposable
+    public class InMemoryCache : CacheBase, IAnyCache, IDisposable
     {
         private readonly ObjectCache _cache;
 
@@ -62,25 +62,26 @@ namespace AnyCache.InMemory
             return (T)_cache.AddOrGetExisting(key, value, new CacheItemPolicy { SlidingExpiration = slidingExpiration });
         }
 
-        public override object GetValueOrAdd(string key, Func<object> retriever, DateTimeOffset? absoluteExpiration = null)
-        {
-            return _cache.AddOrGetExisting(key, retriever?.Invoke(), absoluteExpiration.GetValueOrDefault(DateTimeOffset.MaxValue));
-        }
+//EARNING, TODO: check when the retriever result is null, AddOrGetExisting not adds null to cache
+        //public override object GetValueOrAdd(string key, Func<object> retriever, DateTimeOffset? absoluteExpiration = null)
+        //{
+        //    return _cache.AddOrGetExisting(key, retriever?.Invoke(), absoluteExpiration.GetValueOrDefault(DateTimeOffset.MaxValue));
+        //}
 
-        public override T GetValueOrAdd<T>(string key, Func<T> retriever, DateTimeOffset? absoluteExpiration = null)
-        {
-            return (T)_cache.AddOrGetExisting(key, retriever.Invoke(), absoluteExpiration.GetValueOrDefault(DateTimeOffset.MaxValue));
-        }
+        //public override T GetValueOrAdd<T>(string key, Func<T> retriever, DateTimeOffset? absoluteExpiration = null)
+        //{
+        //    return (T)_cache.AddOrGetExisting(key, retriever.Invoke(), absoluteExpiration.GetValueOrDefault(DateTimeOffset.MaxValue));
+        //}
 
-        public override object GetValueOrAdd(string key, Func<object> retriever, TimeSpan slidingExpiration)
-        {
-            return _cache.AddOrGetExisting(key, retriever?.Invoke(), new CacheItemPolicy { SlidingExpiration = slidingExpiration });
-        }
+        //public override object GetValueOrAdd(string key, Func<object> retriever, TimeSpan slidingExpiration)
+        //{
+        //    return _cache.AddOrGetExisting(key, retriever?.Invoke(), new CacheItemPolicy { SlidingExpiration = slidingExpiration });
+        //}
 
-        public override T GetValueOrAdd<T>(string key, Func<T> retriever, TimeSpan slidingExpiration)
-        {
-            return (T)_cache.AddOrGetExisting(key, retriever.Invoke(), new CacheItemPolicy { SlidingExpiration = slidingExpiration });
-        }
+        //public override T GetValueOrAdd<T>(string key, Func<T> retriever, TimeSpan slidingExpiration)
+        //{
+        //    return (T)_cache.AddOrGetExisting(key, retriever.Invoke(), new CacheItemPolicy { SlidingExpiration = slidingExpiration });
+        //}
 
         public override void Set(string key, object value, DateTimeOffset? absoluteExpiration = null)
         {

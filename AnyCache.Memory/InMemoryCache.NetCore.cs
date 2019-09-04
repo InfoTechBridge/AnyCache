@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnyCache.InMemory
 {
-    public class InMemoryCache : CacheBase, IDisposable
+    public class InMemoryCache : CacheBase, IAnyCache, IDisposable
     {
         private readonly MemoryCache _cache;
 
@@ -98,45 +98,50 @@ namespace AnyCache.InMemory
             });
         }
 
-        public override object GetValueOrAdd(string key, Func<object> retriever, DateTimeOffset? absoluteExpiration = null)
-        {
-            return _cache.GetOrCreate(key, entry =>
-            {
-                var value = retriever?.Invoke();
-                entry.AbsoluteExpiration = absoluteExpiration;
-                return value;
-            });
-        }
+        
+        //public override object GetValueOrAdd(string key, Func<object> retriever, DateTimeOffset? absoluteExpiration = null)
+        //{
+        //    //EARNING: when the retriever result is null, GetOrCreate adds null to cache
+        //    return _cache.GetOrCreate(key, entry =>
+        //    {
+        //        var value = retriever?.Invoke();
+        //        entry.AbsoluteExpiration = absoluteExpiration;
+        //        return value;
+        //    });
+        //}
 
-        public override T GetValueOrAdd<T>(string key, Func<T> retriever, DateTimeOffset? absoluteExpiration = null)
-        {
-            return _cache.GetOrCreate<T>(key, entry =>
-            {
-                var value = retriever.Invoke();
-                entry.AbsoluteExpiration = absoluteExpiration;
-                return value;
-            });
-        }
+        //public override T GetValueOrAdd<T>(string key, Func<T> retriever, DateTimeOffset? absoluteExpiration = null)
+        //{
+        //    //EARNING: when the retriever result is null, GetOrCreate adds null to cache
+        //    return _cache.GetOrCreate<T>(key, entry =>
+        //    {
+        //        var value = retriever.Invoke();
+        //        entry.AbsoluteExpiration = absoluteExpiration;
+        //        return value;
+        //    });
+        //}
 
-        public override object GetValueOrAdd(string key, Func<object> retriever, TimeSpan slidingExpiration)
-        {
-            return _cache.GetOrCreate(key, entry =>
-            {
-                var value = retriever?.Invoke();
-                entry.AbsoluteExpirationRelativeToNow = slidingExpiration;
-                return value;
-            });
-        }
+        //public override object GetValueOrAdd(string key, Func<object> retriever, TimeSpan slidingExpiration)
+        //{
+        //    //EARNING: when the retriever result is null, GetOrCreate adds null to cache
+        //    return _cache.GetOrCreate(key, entry =>
+        //    {
+        //        var value = retriever?.Invoke();
+        //        entry.AbsoluteExpirationRelativeToNow = slidingExpiration;
+        //        return value;
+        //    });
+        //}
 
-        public override T GetValueOrAdd<T>(string key, Func<T> retriever, TimeSpan slidingExpiration)
-        {
-            return _cache.GetOrCreate<T>(key, entry =>
-            {
-                var value = retriever.Invoke();
-                entry.AbsoluteExpirationRelativeToNow = slidingExpiration;                
-                return value;
-            });
-        }
+        //public override T GetValueOrAdd<T>(string key, Func<T> retriever, TimeSpan slidingExpiration)
+        //{
+        //    //EARNING: when the retriever result is null, GetOrCreate adds null to cache
+        //    return _cache.GetOrCreate<T>(key, entry =>
+        //    {
+        //        var value = retriever.Invoke();
+        //        entry.AbsoluteExpirationRelativeToNow = slidingExpiration;                
+        //        return value;
+        //    });
+        //}
 
         public override void Set(string key, object value, DateTimeOffset? absoluteExpiration = null)
         {
