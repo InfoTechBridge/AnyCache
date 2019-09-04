@@ -7,16 +7,17 @@
     <Company>InfoTeach Bridge</Company>
     <RepositoryUrl>https://github.com/InfoTechBridge/AnyCache</RepositoryUrl>
     <PackageProjectUrl>https://github.com/InfoTechBridge/AnyCache</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/InfoTechBridge/AnyCache/License</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageTags>Cache, dotnet, dotnetcore, Xamarin, InMemory</PackageTags>
     <Description>AnyCache .Net and .Net Core InMemmory caching provider.</Description>
-    <Copyright>2018 InfoTechbridge</Copyright>
+    <Copyright>2019 InfoTechbridge</Copyright>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <!-- common NuGet package refs that affect all projects -->
-  <ItemGroup>
-    <ProjectReference Include="..\AnyCache.Core\AnyCache.Core.csproj" />
-  </ItemGroup>
 
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
@@ -38,6 +39,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Caching" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnyCache.Core\AnyCache.Core.csproj" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
     <DefineConstants>NET45;NETFULL</DefineConstants>
