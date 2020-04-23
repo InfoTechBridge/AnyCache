@@ -6,5 +6,6 @@ namespace AnyCache.Core
 {
     class test
     {
+        public string line1 { get; set; }
     }
 }
