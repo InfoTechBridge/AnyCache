@@ -119,12 +119,12 @@ namespace AnyCache.Core
             return default(T);
         }
 
-        public IDictionary<string, object> GetAll(IEnumerable<string> keys)
+        public IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys)
         {
             throw new NotImplementedException();
         }
 
-        public IDictionary<string, T> GetAll<T>(IEnumerable<string> keys)
+        public IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys)
         {
             throw new NotImplementedException();
         }

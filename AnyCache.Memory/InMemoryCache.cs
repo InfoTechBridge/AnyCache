@@ -130,13 +130,13 @@ namespace AnyCache.InMemory
         //    });
         //}
 
-        public override IDictionary<string, object> GetAll(IEnumerable<string> keys)
+        public override IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys)
         {
-            return _cache.GetValues(keys);
+            return (IEnumerable<KeyValuePair<string, object>>)_cache.GetValues(keys).Select(i => new KeyValuePair<string, object>(i.Key, i.Value));
         }
-        public override IDictionary<string, T> GetAll<T>(IEnumerable<string> keys)
+        public override IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys)
         {
-            return (IDictionary<string, T>)_cache.GetValues(keys).Select(i => new KeyValuePair<string, T>(i.Key, (T)i.Value));
+            return (IEnumerable<KeyValuePair<string, T>>)_cache.GetValues(keys).Select(i => new KeyValuePair<string, T>(i.Key, (T)i.Value));
         }
 
         public override object Remove(string key)
@@ -157,11 +157,6 @@ namespace AnyCache.InMemory
         {
             return _cache.AsEnumerable().GetEnumerator();
         }
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
 
         public override void ClearCache()
         {

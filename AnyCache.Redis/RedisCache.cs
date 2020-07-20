@@ -21,11 +21,11 @@ namespace AnyCache.Redis
         /// You can also use the .IsConnected() method on a database (this takes a key for server targeting reasons, but if you are only talking to one server, you could pass anything as the key).
         /// Marc Gravell
         /// </summary>
-        ConnectionMultiplexer _redis;
-        IDatabase _db;
+        private readonly ConnectionMultiplexer _redis;
+        private readonly IDatabase _db;
 
 
-        public RedisCache(string connectionString = null, string keyPrefix = null, ISerializer serializer = null)
+        public RedisCache(string connectionString = null, int dbId = -1, string keyPrefix = null, ISerializer serializer = null)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
                 _redis = ConnectionMultiplexer.Connect("localhost");
@@ -33,7 +33,7 @@ namespace AnyCache.Redis
                 _redis = ConnectionMultiplexer.Connect(connectionString);
             _redis.PreserveAsyncOrder = false;
 
-            _db = _redis.GetDatabase();
+            _db = _redis.GetDatabase(dbId);
 
             KeyPrefix = keyPrefix;
 
@@ -61,6 +61,9 @@ namespace AnyCache.Redis
 
         protected RedisValue ToRedisValue(object obj)
         {
+            if (obj == null)
+                return RedisValue.Null;
+
             using (MemoryStream stream = new MemoryStream())
             {
                 _serializer.Serialize(obj, stream);
@@ -71,6 +74,9 @@ namespace AnyCache.Redis
 
         protected object FromRedisValue(RedisValue value)
         {
+            if (value.IsNull)
+                return null;
+
             using (MemoryStream stream = new MemoryStream(value))
             {
                 object retObject = _serializer.Deserialize(stream);
@@ -80,6 +86,17 @@ namespace AnyCache.Redis
 
         protected T FromRedisValue<T>(RedisValue value)
         {
+            if (value.IsNull)
+            {
+                //if(nu)
+                //return null;
+
+                //if (default(T) == null)
+                return default(T);
+                //else
+                //    throw new EntryNotFoundException();
+            }
+
             using (MemoryStream stream = new MemoryStream(value))
             {
                 T retObject = _serializer.Deserialize<T>(stream);
@@ -200,24 +217,13 @@ namespace AnyCache.Redis
         public override object Get(string key)
         {
             var val = _db.StringGet(ToRedisKey(key));
-            if (!val.IsNull)
-                return FromRedisValue(val);
-            else
-                return null;
+            return FromRedisValue(val);
         }
 
         public override T Get<T>(string key)
         {
             var val = _db.StringGet(ToRedisKey(key));
-            if (!val.IsNull)
-                return FromRedisValue<T>(val);
-            else
-            {
-                //if (default(T) == null)
-                return default(T);
-                //else
-                //    throw new EntryNotFoundException();
-            }
+            return FromRedisValue<T>(val);
         }
 
         //public T GetValueOrDefault<T>(string key)
@@ -233,14 +239,14 @@ namespace AnyCache.Redis
         //    //t.tr
         //}
 
-        public override T GetValueOrDefault<T>(string key, T value)
-        {
-            var val = _db.StringGet(ToRedisKey(key));
-            if (!val.IsNull)
-                return FromRedisValue<T>(val);
-            else
-                return value;
-        }
+        //public override T GetValueOrDefault<T>(string key, T value)
+        //{
+        //    var val = _db.StringGet(ToRedisKey(key));
+        //    if (!val.IsNull)
+        //        return FromRedisValue<T>(val);
+        //    else
+        //        return value;
+        //}
 
         //public bool TryGetValue(string key, out object result)
         //{
@@ -305,38 +311,18 @@ namespace AnyCache.Redis
             //    return default(T);
         }
 
-        public override IDictionary<string, object> GetAll(IEnumerable<string> keys)
+        public override IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys)
         {
-            IDictionary<string, object> values = new Dictionary<string, object>();
-            if (keys == null || keys.Count() == 0)
-                return values;
-            
-            //var items = _db.StringGet(keys.Select(k => (RedisKey)ToRedisKey(k)).ToArray());
-            //int i = 0;
-            //foreach (var val in items)
-            //{
-            //    if (!val.IsNull)
-            //        values.Add(keys[i++], FromRedisValue(val));
-            //}
-            foreach (var key in keys)
-            {
-                var val = _db.StringGet(ToRedisKey(key));
-                if (!val.IsNull)
-                    values.Add(key, FromRedisValue(val));
-            }
-            return values;
+            var keysArray = keys.Select(k => (RedisKey)ToRedisKey(k)).ToArray();
+            int i = 0;
+            return _db.StringGet(keysArray).Select(val => new KeyValuePair<string, object>(FromRedisKey(keysArray[i++]), FromRedisValue(val)));            
         }
 
-        public override IDictionary<string, T> GetAll<T>(IEnumerable<string> keys)
+        public override IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys)
         {
-            IDictionary<string, T> values = new Dictionary<string, T>();
-            foreach (var key in keys)
-            {
-                var val = _db.StringGet(ToRedisKey(key));
-                if (!val.IsNull)
-                    values.Add(key, FromRedisValue<T>((string)val));
-            }
-            return values;
+            var keysArray = keys.Select(k => (RedisKey)ToRedisKey(k)).ToArray();
+            int i = 0;
+            return _db.StringGet(keysArray).Select(val => new KeyValuePair<string, T>(FromRedisKey(keysArray[i++]), FromRedisValue<T>(val)));
         }
 
         public override object Remove(string key)
@@ -365,7 +351,7 @@ namespace AnyCache.Redis
             foreach (var endpoint in endpoints)
             {
                 var server = _redis.GetServer(endpoint);
-                counts += server.Keys(pattern: ToRedisKey("*")).Count();
+                counts += server.Keys(_db.Database, pattern: ToRedisKey("*")).Count();
             }
             return counts;
         }
@@ -376,20 +362,14 @@ namespace AnyCache.Redis
             foreach (var endpoint in endpoints)
             {
                 var server = _redis.GetServer(endpoint);
-                var keys = server.Keys(pattern: ToRedisKey("*"));
+                var keys = server.Keys(_db.Database, pattern: ToRedisKey("*"));
                 foreach (var key in keys)
                 {
                     var val = _db.StringGet(key);
-                    if (!val.IsNull)
-                        yield return new KeyValuePair<string, object>(FromRedisKey(key), FromRedisValue(val));
+                    yield return new KeyValuePair<string, object>(FromRedisKey(key), FromRedisValue(val));
                 }
             }
         }
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
 
         public override void ClearCache()
         {
@@ -399,7 +379,7 @@ namespace AnyCache.Redis
                 var server = _redis.GetServer(endpoint);
                 //server.FlushDatabase(_db.Database);
 
-                var keys = server.Keys(pattern: ToRedisKey("*")).ToArray();
+                var keys = server.Keys(_db.Database, pattern: ToRedisKey("*")).ToArray();
                 if (keys.Count() > 0)
                     _db.KeyDelete(keys);
             }

@@ -7,6 +7,9 @@ namespace AnyCache.Test.Core
     [Serializable]
     public class Person
     {
+        public string Name { get; set; }
+        public string Family { get; set; }
+
         public Person()
         {
 
@@ -16,8 +19,6 @@ namespace AnyCache.Test.Core
         {
             Name = name;
             Family = family;
-        }
-        public string Name { get; set; }
-        public string Family { get; set; }
+        }        
     }
 }

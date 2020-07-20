@@ -183,9 +183,17 @@ namespace AnyCache.Core
             }
         }
 
-        public abstract IDictionary<string, object> GetAll(IEnumerable<string> keys);
+        public virtual IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys)
+        {
+            foreach (var key in keys)
+                yield return new KeyValuePair<string, object>(key, Get(key));
+        }
 
-        public abstract IDictionary<string, T> GetAll<T>(IEnumerable<string> keys);
+        public virtual IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys)
+        {
+            foreach (var key in keys)
+                yield return new KeyValuePair<string, T>(key, Get<T>(key));
+        }
 
         public abstract object Remove(string key);
 

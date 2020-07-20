@@ -74,12 +74,12 @@ namespace AnyCache.Disk
             throw new NotImplementedException();
         }
 
-        public override IDictionary<string, object> GetAll(IEnumerable<string> keys)
+        public override IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys)
         {
             throw new NotImplementedException();
         }
 
-        public override IDictionary<string, T> GetAll<T>(IEnumerable<string> keys)
+        public override IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys)
         {
             throw new NotImplementedException();
         }

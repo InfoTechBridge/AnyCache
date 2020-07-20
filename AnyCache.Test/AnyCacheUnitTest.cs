@@ -32,7 +32,7 @@ namespace AnyCache.Test
             string key = "key1typed";
             cache.Set(key, 123000, null);
 
-            int ret = cache.Get<int>(key);
+            var ret = cache.Get<int?>(key);
 
             Assert.AreEqual(123000, ret);
 
@@ -54,7 +54,7 @@ namespace AnyCache.Test
         {
             string key = "TestNotExistValue";
 
-            var ret = cache.Get<int>(key);
+            var ret = cache.Get<int?>(key);
 
             Assert.IsNull(ret);
 

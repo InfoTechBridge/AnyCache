@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AnyCache.InMemory
@@ -196,15 +197,7 @@ namespace AnyCache.InMemory
         //        return _cache.Get<T>(key);
         //    });
         //}        
-
-        public override IDictionary<string, object> GetAll(IEnumerable<string> keys)
-        {
-            throw new NotImplementedException();
-        }
-        public override IDictionary<string, T> GetAll<T>(IEnumerable<string> keys)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public override object Remove(string key)
         {
@@ -235,8 +228,47 @@ namespace AnyCache.InMemory
         }
 
         public override IEnumerator<KeyValuePair<string, object>> GetEnumerator()
-        {            
-            throw new NotImplementedException();
+        {
+            var collectionPropertyInfo = typeof(MemoryCache).GetProperty("EntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo keyMethodInfo = null;
+            PropertyInfo entryMethodInfo = null;
+
+            var collection = collectionPropertyInfo.GetValue(_cache) as ICollection;
+            ////System.Collections.Concurrent.ConcurrentDictionary`2[[System.Object, System.Private.CoreLib, Version = 4.0.0.0, Culture = neutral, PublicKeyToken = 7cec85d7bea7798e],[Microsoft.Extensions.Caching.Memory.CacheEntry, Microsoft.Extensions.Caching.Memory, Version= 2.1.2.0, Culture = neutral, PublicKeyToken = adb9793829ddae60]]"}
+            //if (collection != null)
+            //{
+            //    foreach (var item in collection)
+            //    {
+            //        if (keyMethodInfo == null)
+            //            keyMethodInfo = item.GetType().GetProperty("Key");
+
+            //        if (entryMethodInfo == null)
+            //            entryMethodInfo = item.GetType().GetProperty("Value");
+
+            //        var key = keyMethodInfo.GetValue(item);
+            //        var entry = (ICacheEntry)entryMethodInfo.GetValue(item);
+
+            //        yield return new KeyValuePair<string, object>(key.ToString(), entry.Value);
+            //    }
+            //}
+
+            var cacheEnumerator = collection.GetEnumerator();
+            while (cacheEnumerator.MoveNext())
+            {
+                //var item = (KeyValuePair<object, ICacheEntry>)cacheEnumerator.Current;
+                var item = cacheEnumerator.Current;
+
+                if (keyMethodInfo == null)
+                    keyMethodInfo = item.GetType().GetProperty("Key");
+
+                if (entryMethodInfo == null)
+                    entryMethodInfo = item.GetType().GetProperty("Value");
+
+                var key = keyMethodInfo.GetValue(item);
+                var entry = (ICacheEntry)entryMethodInfo.GetValue(item);
+
+                yield return new KeyValuePair<string, object>(key.ToString(), entry.Value);
+            }
         }
 
         //IEnumerator IEnumerable.GetEnumerator()

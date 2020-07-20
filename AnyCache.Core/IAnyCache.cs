@@ -44,8 +44,8 @@ namespace AnyCache.Core
         object GetValueOrAdd(string key, Func<object> retriever, TimeSpan slidingExpiration);
         T GetValueOrAdd<T>(string key, Func<T> retriever, TimeSpan slidingExpiration);
 
-        IDictionary<string, object> GetAll(IEnumerable<string> keys);
-        IDictionary<string, T> GetAll<T>(IEnumerable<string> keys);
+        IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys);
+        IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys);
 
         object Remove(string key);
         T Remove<T>(string key);

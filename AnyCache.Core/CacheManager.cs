@@ -122,11 +122,11 @@ namespace AnyCache.Core
             return innerCache.GetAsync<T>(key);
         }
 
-        public IDictionary<string, object> GetAll(IEnumerable<string> keys)
+        public IEnumerable<KeyValuePair<string, object>> GetAll(IEnumerable<string> keys)
         {
             return innerCache.GetAll(keys);
         }
-        public IDictionary<string, T> GetAll<T>(IEnumerable<string> keys)
+        public IEnumerable<KeyValuePair<string, T>> GetAll<T>(IEnumerable<string> keys)
         {
             return innerCache.GetAll<T>(keys);
         }
