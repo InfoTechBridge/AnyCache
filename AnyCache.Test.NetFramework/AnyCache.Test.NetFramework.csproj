@@ -49,8 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnyCacheUnitTest.cs" />
+    <Compile Include="InMemoryCacheUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedisCacheUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -67,6 +68,10 @@
     <ProjectReference Include="..\AnyCache.Redis\AnyCache.Redis.csproj">
       <Project>{c851405d-3845-432f-85a1-5f0cb3876040}</Project>
       <Name>AnyCache.Redis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AnyCache.Serialization.Protobuf\AnyCache.Serialization.Protobuf.csproj">
+      <Project>{ce3a282e-9119-4b7d-a93f-6e51f7a8a234}</Project>
+      <Name>AnyCache.Serialization.Protobuf</Name>
     </ProjectReference>
     <ProjectReference Include="..\AnyCache.Serialization\AnyCache.Serialization.csproj">
       <Project>{3feb97d0-a894-45f2-b788-9fe11c67e3bc}</Project>

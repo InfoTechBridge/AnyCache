@@ -1,5 +1,4 @@
-﻿using AnyCache.InMemory;
-using AnyCache.Redis;
+﻿using AnyCache.Redis;
 using AnyCache.Serialization;
 using AnyCache.Serialization.Protobuf;
 using AnyCache.Test.Core;
@@ -8,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AnyCache.Test.NetCore
+namespace AnyCache.Test.NetFramework
 {
     [TestClass]
     public class RedisCacheUnitTest : AnyCacheUnitTestBase
@@ -22,7 +21,7 @@ namespace AnyCache.Test.NetCore
             //ISerializer serializer = new ProtoBufSerializer();
 
             //cache = new RedisCache(serializer: serializer);
-            base.cache = new RedisCache(null, 1, "test_dotnet_core", serializer);
+            base.cache = new RedisCache(null, 2, "test_dotnet_framework", serializer);
             //this line will be run before any test method run
             base.cache.ClearCache();
         }

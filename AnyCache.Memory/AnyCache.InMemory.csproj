@@ -11,8 +11,8 @@
     <PackageTags>Cache, dotnet, dotnetcore, Xamarin, InMemory</PackageTags>
     <Description>AnyCache .Net and .Net Core InMemmory caching provider.</Description>
     <Copyright>2019 InfoTechbridge</Copyright>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
     <Version>1.0.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>

@@ -11,6 +11,8 @@
     <PackageTags>Cache, dotnet, dotnetcore, Xamarin, Redis, InMemory</PackageTags>
     <Description>.Net and .Net Core caching abstraction layer that supports various difrent cache providers.</Description>
     <Copyright>2018 InfoTechbridge</Copyright>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
   <!-- common NuGet package refs that affect all projects -->

@@ -271,11 +271,6 @@ namespace AnyCache.InMemory
             }
         }
 
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public override void ClearCache()
         {
             throw new NotImplementedException();

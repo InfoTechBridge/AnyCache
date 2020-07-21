@@ -1,14 +1,9 @@
 using AnyCache.Core;
-using AnyCache.InMemory;
-using AnyCache.Redis;
-using AnyCache.Serialization;
-using AnyCache.Serialization.Protobuf;
-using AnyCache.Test.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnyCache.Test.NetCore
+namespace AnyCache.Test.Core
 {
     //[TestClass]
     public abstract class AnyCacheUnitTestBase

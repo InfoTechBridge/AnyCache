@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AnyCache.Test.NetCore
+namespace AnyCache.Test.NetFramework
 {
     [TestClass]
     public class InMemoryCacheUnitTest : AnyCacheUnitTestBase
