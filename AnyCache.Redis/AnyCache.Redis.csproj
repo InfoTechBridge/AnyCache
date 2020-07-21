@@ -7,13 +7,14 @@
     <Company>InfoTeach Bridge</Company>
     <RepositoryUrl>https://github.com/InfoTechBridge/AnyCache</RepositoryUrl>
     <PackageProjectUrl>https://github.com/InfoTechBridge/AnyCache</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/InfoTechBridge/AnyCache/License</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageTags>Cache, dotnet, dotnetcore, Xamarin, Redis</PackageTags>
     <Description>AnyCache .Net and .Net Core Redis caching provider.</Description>
     <Copyright>2018 InfoTechbridge</Copyright>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <!-- common NuGet package refs that affect all projects -->
