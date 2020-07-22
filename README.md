@@ -1,10 +1,11 @@
 # AnyCache
-.Net cache framework for connecting to any caches including in memory cache and Redis from dotnet, dotnet-core and Xamarin forms.
+.Net cache framework for connecting to any caches including In Memory cache and Redis from dotnet, dotnet-core and Xamarin forms.
 
 [![License](http://img.shields.io/:license-MIT-blue.svg)](https://raw.githubusercontent.com/giacomelli/JobSharp/master/LICENSE)
 
 AnyCache is library for having common cache API for .Net framework and .Net Core as well as Xamarin Forms projects.
-As you know, the MemoryCache API in .Net freamwork is not same as MemoryCache in .Net Core and we couldn't easly transfer our code between them. By AnyCache we could have one code base that could be reused in diffrent type of project without any code change. AnyCache also support Redis cachew whith same API as MemoryCache, so we could swap our project caching from MemoryCache to Redis cache and vice versa whith out any major code change. I have plan to add more type of chaching in the future.
+As you know, the MemoryCache API in .Net freamwork is not same as MemoryCache in .Net Core and we couldn't easly transfer our code between them. By AnyCache we could have one code base that could be reused in diffrent type of projects without any code change.
+AnyCache also support Redis cache whith same API as MemoryCache, so we could swap our project caching from MemoryCache to Redis cache and vice versa whithout any major code change. I have plan to add more type of chaching in the future.
 
 Features
 ===
@@ -21,7 +22,7 @@ var ret = cache.Get<int?>("key");
 
 ```csharp
 Person obj = new Person("Tom", "Hanks");
-cache.Set(key, obj, null);
+cache.Set(key, obj);
 
 Person ret = cache.Get<Person>(key);
 ```
