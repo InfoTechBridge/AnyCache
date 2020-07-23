@@ -40,7 +40,7 @@ For creating in memory cache use following nuget command to add library to your 
 PM> Install-Package AnyCache.InMemory
 ```
 
-Then use following code to create In Memory cache. 
+Then use following code to create In Memory cache instance. 
 
 ```csharp
 var cache = new InMemoryCache();
@@ -55,11 +55,51 @@ PM> Install-Package AnyCache.Redis
 PM> Install-Package AnyCache.Serialization
 ```
 
-Then use following code to create Redis cache. 
+Then use following code to create Redis cache instance. 
 
 ```csharp
 ISerializer serializer = new JsonSerializer(null, true);
 var cache = new RedisCache(connectionString:"localhost", serializer:serializer);
+```
+
+Dependency Injection
+--------------------
+
+AnyCache supports Dependency Injection. Following example shows how to use AnyCache by .Net Core injection mechanism.
+
+**In Memory Cache**
+
+```csharp
+ service.AddSingleton<IAnyCache>(s =>
+    {
+        return new InMemoryCache();;
+    });
+```
+
+**Redis Cache**
+
+```csharp
+ service.AddSingleton<IAnyCache>(s =>
+    {
+        ISerializer serializer = new JsonSerializer(null, true);
+        return new RedisCache(connectionString:"localhost", serializer:serializer);
+    });
+```
+
+Now you can inject AnyCache at runtime into your services/controllers:
+
+```csharp
+public class EmployeesController {
+
+	private readonly IAnyCache _cache;
+
+	public EmployeesController(IAnyCache cache)
+    {
+        _cache = cache;
+    }
+
+	// use _cache.Set or _cache.Get
+}
 ```
 
 List of available methods
