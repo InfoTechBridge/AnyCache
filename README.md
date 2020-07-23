@@ -69,36 +69,38 @@ AnyCache supports Dependency Injection. Following example shows how to use AnyCa
 
 **In Memory Cache**
 
+Remember to register InMemoryCache as singleton to make sure using same cache instance in whole of your project.
+
 ```csharp
- service.AddSingleton<IAnyCache>(s =>
-    {
-        return new InMemoryCache();;
-    });
+service.AddSingleton<IAnyCache>(s =>
+{
+    return new InMemoryCache();;
+});
 ```
 
 **Redis Cache**
 
 ```csharp
- service.AddSingleton<IAnyCache>(s =>
-    {
-        ISerializer serializer = new JsonSerializer(null, true);
-        return new RedisCache(connectionString:"localhost", serializer:serializer);
-    });
+service.AddSingleton<IAnyCache>(s =>
+{
+    ISerializer serializer = new JsonSerializer(null, true);
+    return new RedisCache(connectionString:"localhost", serializer:serializer);
+});
 ```
 
 Now you can inject AnyCache at runtime into your services/controllers:
 
 ```csharp
-public class EmployeesController {
+public class EmployeesController 
+{
+    private readonly IAnyCache _cache;
 
-	private readonly IAnyCache _cache;
-
-	public EmployeesController(IAnyCache cache)
+    public EmployeesController(IAnyCache cache)
     {
         _cache = cache;
     }
 
-	// use _cache.Set or _cache.Get
+    // use _cache.Set or _cache.Get
 }
 ```
 
